@@ -2,335 +2,550 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Mykael Hunter — DevOps Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Egbuatu Silas Odinaka — DevOps Portfolio</title>
+<meta name="description" content="DevOps &amp; Platform Engineering portfolio of Egbuatu Silas Odinaka — resilient infrastructure, GitOps, and cloud-native systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0b0f0d;
-    --panel: #111613;
-    --line: #23302a;
-    --amber: #ffb454;
-    --green: #6bffb0;
-    --red: #ff6b6b;
-    --ink: #e9ede9;
-    --dim: #8a9a90;
-    --mono: 'JetBrains Mono','SF Mono',Consolas,monospace;
-    --disp: 'Archivo Black','Arial Black',sans-serif;
+    --navy: #141b2b;
+    --navy-2: #1c2536;
+    --paper: #f3f4f4;
+    --paper-dim: #d9dce1;
+    --wire: #5a6a82;
+    --node: #c7ccd4;
+    --accent: #8fb4d9;
+    --text-dim: #9aa4b5;
   }
-  *{box-sizing:border-box;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
   body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:'Inter',system-ui,sans-serif;
-    display:flex; flex-direction:column; align-items:center;
-    padding:28px 14px 40px; min-height:100vh;
+    background:var(--navy);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
   }
-  .wrap{width:100%; max-width:980px;}
-  .topbar{
-    display:flex; justify-content:space-between; align-items:baseline;
-    margin-bottom:16px; font-family:var(--mono); font-size:12px; color:var(--dim);
-    letter-spacing:.04em; text-transform:uppercase;
-  }
-  .topbar b{color:var(--green);}
-  .stage{
-    position:relative; border:1px solid var(--line); border-radius:4px;
-    background:
-      linear-gradient(180deg, rgba(107,255,176,.03), transparent 40%),
-      var(--panel);
-    overflow:hidden; min-height:560px;
-  }
-  .stage::before{
-    content:""; position:absolute; inset:0; pointer-events:none;
-    background: repeating-linear-gradient(180deg, rgba(255,255,255,.012) 0px, rgba(255,255,255,.012) 1px, transparent 1px, transparent 3px);
-  }
-  .track{display:flex; transition: transform .5s cubic-bezier(.65,0,.35,1);}
-  .slide{
-    min-width:100%; padding:44px 48px 40px; display:flex; flex-direction:column;
-  }
-  .eyebrow{
-    font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
-    color:var(--amber); display:flex; align-items:center; gap:10px; margin-bottom:14px;
-  }
-  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--red); box-shadow:0 0 0 3px rgba(255,107,107,.15);}
-  h1.hero{
-    font-family:var(--disp); font-size:clamp(30px,5vw,46px); line-height:1.02; margin:0 0 10px;
+  ::selection{ background:var(--accent); color:var(--navy); }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
     letter-spacing:-0.01em;
+    line-height:1.05;
   }
-  h2.title{
-    font-family:var(--disp); font-size:clamp(26px,4vw,38px); line-height:1.04; margin:0 0 6px;
-    letter-spacing:-.01em;
+
+  a{ color:inherit; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--accent);
   }
-  .sub{color:var(--dim); font-size:15px; max-width:640px; margin:0 0 22px; line-height:1.5;}
-  .role{font-family:var(--mono); font-size:12.5px; color:var(--green); margin-bottom:26px;}
-  .meta-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px;}
-  .pill{
-    font-family:var(--mono); font-size:11px; border:1px solid var(--line); color:var(--ink);
-    padding:5px 10px; border-radius:3px; background:rgba(255,255,255,.02);
-  }
-  .pill.hit{border-color:var(--green); color:var(--green);}
-  .grid2{display:grid; grid-template-columns:1.1fr .9fr; gap:28px; flex:1;}
-  .stat-block{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px;}
-  .stat{border-left:2px solid var(--amber); padding:2px 0 2px 12px;}
-  .stat .num{font-family:var(--disp); font-size:26px; color:var(--ink); display:block; line-height:1;}
-  .stat .lbl{font-family:var(--mono); font-size:10.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.06em;}
-  .term{
-    background:#070a08; border:1px solid var(--line); border-radius:4px;
-    font-family:var(--mono); font-size:12.2px; color:var(--green); padding:16px 16px;
-    line-height:1.65; overflow:auto; max-height:340px;
-  }
-  .term .c{color:var(--dim);}
-  .term .p{color:var(--amber);}
-  .term .err{color:var(--red);}
-  ul.bullets{margin:0; padding-left:0; list-style:none;}
-  ul.bullets li{
-    position:relative; padding-left:18px; margin-bottom:10px; font-size:14px; line-height:1.5; color:var(--ink);
-  }
-  ul.bullets li::before{content:"▸"; position:absolute; left:0; color:var(--amber);}
-  .section-label{font-family:var(--mono); font-size:11px; color:var(--dim); text-transform:uppercase; letter-spacing:.1em; margin:0 0 10px;}
-  .foot-line{
-    margin-top:auto; padding-top:18px; border-top:1px dashed var(--line);
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
     display:flex; justify-content:space-between; align-items:center;
-    font-family:var(--mono); font-size:11px; color:var(--dim);
+    padding:22px 6vw;
+    background:linear-gradient(to bottom, rgba(20,27,43,0.92), rgba(20,27,43,0));
+    backdrop-filter:blur(2px);
   }
-  .cover .grid2{display:block;}
-  .cover .lead{font-size:16px; color:var(--dim); max-width:600px; line-height:1.6; margin-bottom:30px;}
-  .stack-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:auto;}
-  .stack-tags span{font-family:var(--mono); font-size:11px; color:var(--amber); border:1px solid rgba(255,180,84,.35); padding:4px 9px; border-radius:3px;}
-  .bio{font-family:var(--mono); font-size:13px; color:var(--ink); border-left:2px solid var(--green); padding:10px 0 10px 14px; margin-bottom:24px; max-width:600px; line-height:1.6;}
-  .repo-link{
-    display:inline-flex; align-items:center; gap:6px; margin-top:16px;
-    font-family:var(--mono); font-size:12px; color:var(--green); text-decoration:none;
-    border:1px solid rgba(107,255,176,.35); padding:7px 12px; border-radius:3px; width:fit-content;
-    transition:.2s;
+  .brand{
+    font-family:'Fraunces', serif;
+    font-size:1.05rem;
+    display:flex; align-items:center; gap:10px;
   }
-  .repo-link:hover{background:rgba(107,255,176,.08); border-color:var(--green);}
-  .repo-link::before{content:"↗";}
-  .nav{display:flex; align-items:center; justify-content:space-between; margin-top:18px;}
-  .arrows{display:flex; gap:10px;}
-  .arrow-btn{
-    width:42px; height:42px; border-radius:50%; border:1px solid var(--line); background:var(--panel);
-    color:var(--ink); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
-    transition:.2s;
+  .brand .mark{
+    width:20px; height:20px; position:relative; flex-shrink:0;
   }
-  .arrow-btn:hover{border-color:var(--green); color:var(--green);}
-  .dots{display:flex; gap:8px;}
-  .dot-btn{width:8px; height:8px; border-radius:50%; background:var(--line); border:none; cursor:pointer; padding:0;}
-  .dot-btn.active{background:var(--green); width:22px; border-radius:4px; transition:.25s;}
-  .counter{font-family:var(--mono); font-size:12px; color:var(--dim);}
-  @media(max-width:720px){
-    .grid2{grid-template-columns:1fr;}
-    .slide{padding:30px 22px 26px;}
+  .brand .mark svg{ width:100%; height:100%; }
+  nav ul{
+    list-style:none; display:flex; gap:34px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;
+  }
+  nav ul a{ text-decoration:none; color:var(--text-dim); transition:color .25s; }
+  nav ul a:hover{ color:var(--paper); }
+  .nav-toggle{ display:none; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; align-items:center;
+    padding:0 6vw;
+    overflow:hidden;
+  }
+  #network-canvas{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    opacity:0.55;
+  }
+  .hero-inner{ position:relative; z-index:2; max-width:760px; padding-top:60px;}
+  .hero .eyebrow{ margin-bottom:22px; display:block; }
+  .hero h1{
+    font-size:clamp(3rem, 8vw, 5.6rem);
+    color:var(--paper);
+  }
+  .hero h1 em{
+    font-style:italic; color:var(--accent);
+  }
+  .hero p.lede{
+    margin-top:26px;
+    font-size:1.15rem;
+    line-height:1.6;
+    color:var(--text-dim);
+    max-width:540px;
+  }
+  .hero .hero-cta{
+    margin-top:40px; display:flex; gap:18px; flex-wrap:wrap;
+  }
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase;
+    padding:14px 26px;
+    border:1px solid var(--wire);
+    border-radius:2px;
+    text-decoration:none;
+    transition:all .25s;
+    display:inline-block;
+  }
+  .btn.primary{ background:var(--paper); color:var(--navy); border-color:var(--paper); }
+  .btn.primary:hover{ background:var(--accent); border-color:var(--accent); }
+  .btn.ghost:hover{ border-color:var(--paper); color:var(--paper); }
+
+  .scroll-cue{
+    position:absolute; bottom:36px; left:6vw;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--text-dim);
+    display:flex; align-items:center; gap:10px;
+  }
+  .scroll-cue::before{
+    content:''; width:26px; height:1px; background:var(--wire);
+    display:inline-block;
+  }
+
+  /* ---------- Section shared ---------- */
+  section{ position:relative; }
+  .section-pad{ padding:120px 6vw; }
+  .section-head{ max-width:640px; margin-bottom:64px; }
+  .section-head .eyebrow{ margin-bottom:16px; }
+  .section-head h2{ font-size:clamp(2rem, 4vw, 2.8rem); color:var(--paper); }
+
+  /* ---------- About / resilience statement ---------- */
+  .statement{
+    background:var(--navy);
+    border-top:1px solid #232d40;
+  }
+  .statement blockquote{
+    font-family:'Fraunces', serif;
+    font-size:clamp(1.5rem, 3.2vw, 2.3rem);
+    font-weight:300;
+    line-height:1.4;
+    max-width:920px;
+    color:var(--paper);
+  }
+  .statement blockquote strong{
+    font-weight:600; color:var(--accent); font-style:italic;
+  }
+
+  /* ---------- Projects ---------- */
+  .projects{ background:var(--paper); color:var(--navy); }
+  .projects .eyebrow{ color:#5f7796; }
+  .projects .section-head h2{ color:var(--navy); }
+
+  .project-list{ display:flex; flex-direction:column; }
+  .project{
+    display:grid;
+    grid-template-columns:80px 1fr 1fr;
+    gap:40px;
+    padding:44px 0;
+    border-top:1px solid var(--paper-dim);
+    align-items:start;
+  }
+  .project:last-child{ border-bottom:1px solid var(--paper-dim); }
+  .project .index{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem;
+    color:#8b93a1;
+    padding-top:6px;
+  }
+  .project h3{
+    font-size:clamp(1.5rem, 2.6vw, 2rem);
+    color:var(--navy);
+    margin-bottom:14px;
+  }
+  .project p{
+    color:#454e5c;
+    line-height:1.65;
+    font-size:0.98rem;
+  }
+  .project .meta{
+    display:flex; flex-direction:column; gap:14px;
+    align-items:flex-start;
+  }
+  .stack-tags{
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .stack-tags span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem; letter-spacing:0.04em;
+    padding:5px 10px;
+    border:1px solid #c3c9d2;
+    border-radius:20px;
+    color:#5a6473;
+  }
+  .project .repo-link{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem;
+    color:var(--navy);
+    text-decoration:none;
+    border-bottom:1px solid var(--navy);
+    padding-bottom:2px;
+    transition:opacity .2s;
+  }
+  .project .repo-link:hover{ opacity:0.6; }
+  .project .highlight{
+    font-weight:600;
+  }
+
+  @media (max-width: 860px){
+    .project{ grid-template-columns:1fr; gap:16px; }
+    .project .index{ padding-top:0; }
+  }
+
+  /* ---------- Skills strip ---------- */
+  .skills{
+    background:var(--navy-2);
+    border-top:1px solid #232d40;
+    border-bottom:1px solid #232d40;
+  }
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:0;
+  }
+  .skill-col{
+    padding:44px 6vw;
+    border-left:1px solid #262f42;
+  }
+  .skill-col:first-child{ border-left:none; }
+  .skill-col h4{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:18px;
+  }
+  .skill-col ul{ list-style:none; }
+  .skill-col li{
+    font-size:0.92rem; color:var(--text-dim);
+    padding:6px 0;
+    border-bottom:1px dashed #2a3448;
+  }
+  .skill-col li:last-child{ border-bottom:none; }
+
+  @media (max-width: 860px){
+    .skills-grid{ grid-template-columns:1fr 1fr; }
+    .skill-col{ border-left:1px solid #262f42; border-top:1px solid #262f42;}
+    .skill-col:nth-child(2n+1){ border-left:none; }
+    .skill-col:nth-child(-n+2){ border-top:none; }
+  }
+
+  /* ---------- Contact ---------- */
+  .contact{
+    background:var(--navy);
+    padding:140px 6vw 90px;
+  }
+  .contact h2{
+    font-size:clamp(2.4rem, 7vw, 5rem);
+    color:var(--paper);
+    max-width:820px;
+  }
+  .contact-links{
+    margin-top:56px;
+    display:grid;
+    grid-template-columns:repeat(3, minmax(200px,1fr));
+    gap:30px;
+  }
+  .contact-links a{
+    display:block;
+    text-decoration:none;
+    border-top:1px solid #2a3448;
+    padding-top:20px;
+  }
+  .contact-links .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--text-dim);
+    display:block; margin-bottom:10px;
+  }
+  .contact-links .value{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    color:var(--paper);
+    transition:color .2s;
+  }
+  .contact-links a:hover .value{ color:var(--accent); }
+
+  @media (max-width: 700px){
+    .contact-links{ grid-template-columns:1fr; }
+  }
+
+  footer{
+    padding:30px 6vw 40px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    color:#4d566a;
+    display:flex; justify-content:space-between;
+    flex-wrap:wrap; gap:10px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+  }
+
+  @media (max-width: 700px){
+    nav ul{ display:none; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="topbar"><span>~/portfolio</span><span><b>mykaelHunter</b> // devops.exe --run</span></div>
 
-  <div class="stage">
-    <div class="track" id="track">
+<nav>
+  <div class="brand">
+    <span class="mark">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 12c2-6 6-6 8 0s6 6 8 0" stroke="#c7ccd4" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </span>
+    Egbuatu Silas Odinaka
+  </div>
+  <ul>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-      <!-- SLIDE 0: COVER -->
-      <div class="slide cover">
-        <div class="eyebrow"><span class="dot"></span> boot sequence // 01 of 05</div>
-        <h1 class="hero">MYKAEL HUNTER<br>BUILDS PLATFORMS<br>THAT DON'T FALL OVER.</h1>
-        <p class="lead">DevOps / Platform Engineer. I take chaotic infrastructure — hardcoded keys, public databases, all-or-nothing deploys — and turn it into self-service, policy-governed, chaos-tested systems. Four production-grade builds. Real outages, real fixes, real numbers.</p>
-        <div class="bio">
-          Mykael Hunter — DevOps/Platform Engineer, Expadox Mentorship Lab (Cohort 2).<br>
-          Stack: Kubernetes, Docker, Terraform, Ansible, Helm, ArgoCD, GitHub Actions, AWS/GCP/Azure.<br>
-          Currently building OpsShield, a multi-tenant SaaS platform, while applying for DevOps roles.
+<section class="hero">
+  <canvas id="network-canvas"></canvas>
+  <div class="hero-inner">
+    <span class="eyebrow">DevOps &amp; Platform Engineering</span>
+    <h1>Systems that <em>heal</em><br>themselves.</h1>
+    <p class="lede">I design and build self-healing infrastructure — platforms that adapt, recover, and keep serving traffic when the underlying nodes don't cooperate. Kubernetes, GitOps, and chaos engineering, applied to production.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#work">View the work</a>
+      <a class="btn ghost" href="#contact">Get in touch</a>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<section class="statement section-pad">
+  <blockquote>
+    Building <strong>resilient systems</strong> means designing for failure, not around it — infrastructure that adapts and recovers on its own, so critical applications stay available under pressure, in dynamic, multi-cloud environments.
+  </blockquote>
+</section>
+
+<section class="projects" id="work">
+  <div class="section-pad" style="padding-bottom:0;">
+    <div class="section-head">
+      <span class="eyebrow">Selected Work</span>
+      <h2>Platforms I've shipped</h2>
+    </div>
+  </div>
+  <div class="section-pad" style="padding-top:0;">
+    <div class="project-list">
+
+      <div class="project">
+        <div class="index">01</div>
+        <div>
+          <h3>StackBridge GroundUp</h3>
+          <p>A Python/Click CLI for managing Kubernetes services end-to-end — cutting provisioning time from days to under <span class="highlight">60 seconds</span>. Automated governance policies and built-in chaos engineering (pod kills, CPU stress, network latency, AZ failure) keep deployments both fast and honest about their failure modes.</p>
         </div>
-        <div class="stack-tags">
-          <span>Kubernetes</span><span>Terraform</span><span>ArgoCD</span><span>Argo Rollouts</span>
-          <span>GitHub Actions</span><span>AWS · Azure · GCP</span><span>Prometheus/Grafana/Loki</span>
-          <span>OPA/Conftest</span><span>Chaos Engineering</span><span>Ansible</span>
+        <div class="meta">
+          <div class="stack-tags">
+            <span>Kubernetes</span><span>Helm</span><span>ArgoCD</span><span>Terraform</span><span>Python/Click</span>
+          </div>
+          <a class="repo-link" href="https://github.com/mykaelHunter/stackbridge" target="_blank" rel="noopener">github.com/mykaelHunter/stackbridge →</a>
         </div>
-        <div class="foot-line"><span>swipe / click through →</span><span>github.com/mykaelHunter</span></div>
       </div>
 
-      <!-- SLIDE 1: STACKBRIDGE / GROUNDUP -->
-      <div class="slide">
-        <div class="eyebrow"><span class="dot"></span> project 01 // internal developer platform</div>
-        <h2 class="title">StackBridge — GroundUp IDP</h2>
-        <div class="role">Python CLI · Terraform · OPA · ArgoCD · Chaos Engineering — Expadox Lab Capstone</div>
-        <div class="meta-row">
-          <span class="pill hit">3–5 days → &lt;60s provisioning</span>
-          <span class="pill hit">Auto-rollback in ~30s</span>
-          <span class="pill">OPA policy gate on every plan</span>
-          <span class="pill">3 chaos experiments</span>
+      <div class="project">
+        <div class="index">02</div>
+        <div>
+          <h3>CloudOpsHub — Payday Platform</h3>
+          <p>A multi-cluster Kubernetes platform spanning AKS and KinD, running the Payday SaaS app with full GitOps delivery. Hybrid cloud observability gives real-time metrics across Azure and local environments, so operations stay seamless regardless of where a workload lands.</p>
         </div>
-        <div class="grid2">
-          <div>
-            <p class="section-label">// the problem</p>
-            <ul class="bullets">
-              <li>Audited a legacy stack riddled with hardcoded AWS keys, a public-subnet database, 0.0.0.0/0 security groups, and MD5-hashed passwords.</li>
-              <li>Six teams shipping daily with zero infra standard and a 3–5 day ticket queue just to get an environment.</li>
-              <li>Built a Python/Click CLI (<code>sb env create dev</code>) that hides Terraform, OPA, and Kubernetes entirely from the caller.</li>
-              <li>Wrote Rego policies that reject untagged resources and unapproved instance types before they ever touch the cloud.</li>
-              <li>Proved the canary rollback live: shipped a deliberately broken image, watched Argo Rollouts detect the error spike and revert traffic automatically — no human touched a button.</li>
-            </ul>
+        <div class="meta">
+          <div class="stack-tags">
+            <span>AKS</span><span>ArgoCD</span><span>Prometheus</span><span>Grafana</span><span>Loki</span><span>Ansible</span>
           </div>
-          <div class="term">
-<span class="c"># deliberately broke a canary release on purpose</span><br>
-$ kubectl set image rollout/api-gateway api-gateway=stackbridge/api-gateway:<span class="err">canary-broken</span><br>
-$ kubectl argo rollouts get rollout api-gateway --watch<br>
-<span class="c">T+0s</span>  canary at 5% traffic<br>
-<span class="c">T+12s</span> error rate climbing past 5% threshold<br>
-<span class="c">T+90s</span> 3rd failed health check hit <span class="p">(failureLimit: 3)</span><br>
-<span class="p">T+92s  Argo Rollouts ABORTS. traffic → stable.</span><br>
-<span class="c">T+105s</span> error rate back to baseline<br><br>
-<span class="c"># self-service environment, one command</span><br>
-$ sb env create dev<br>
-<span class="p">✔ policy gate passed → provisioning...</span><br>
-<span class="p">✔ done in 47s</span>
-          </div>
+          <a class="repo-link" href="https://github.com/mykaelHunter/cloudopshub" target="_blank" rel="noopener">github.com/mykaelHunter/cloudopshub →</a>
         </div>
-        <a class="repo-link" href="https://github.com/mykaelHunter/stackbridge" target="_blank" rel="noopener">github.com/mykaelHunter/stackbridge</a>
       </div>
 
-      <!-- SLIDE 2: CLOUDOPSHUB -->
-      <div class="slide">
-        <div class="eyebrow"><span class="dot"></span> project 02 // multi-cluster gitops</div>
-        <h2 class="title">CloudOpsHub — Payday Platform</h2>
-        <div class="role">Azure AKS + KinD · ArgoCD · GitHub Actions OIDC · Prometheus/Grafana/Loki</div>
-        <div class="meta-row">
-          <span class="pill hit">Zero stored secrets — OIDC only</span>
-          <span class="pill hit">Trivy + Cosign on every image</span>
-          <span class="pill">Hybrid cloud/on-prem cluster split</span>
-          <span class="pill">Full Loki + Alertmanager stack</span>
+      <div class="project">
+        <div class="index">03</div>
+        <div>
+          <h3>Payday on AWS EKS</h3>
+          <p>Production fintech deployment on EKS, with a canary release strategy via Argo Rollouts and disciplined cost controls on the underlying cluster. Includes OIDC-based GitHub Actions pipelines and a hardened IAM setup for cluster auth.</p>
         </div>
-        <div class="grid2">
-          <div>
-            <p class="section-label">// what shipped</p>
-            <ul class="bullets">
-              <li>Ran a genuinely hybrid platform: a local KinD cluster on an Ubuntu VM alongside a real Azure AKS cluster, with one ArgoCD install managing both.</li>
-              <li>Killed static credentials entirely — GitHub Actions authenticates to Azure via OIDC federated identity, scoped per-environment (dev/staging/prod), zero secrets in the repo.</li>
-              <li>Ran a deliberate architecture experiment: reversed the cluster assignment (prod on local, dev/staging on cloud) to measure and prove real latency differences.</li>
-              <li>Fixed the nginx <code>default.conf.template</code> naming bug that silently broke <code>envsubst</code> backend routing — twice, until it was right.</li>
-              <li>Every image ships Trivy-scanned and Cosign-signed via Sigstore Rekor before it's allowed near a cluster.</li>
-            </ul>
+        <div class="meta">
+          <div class="stack-tags">
+            <span>AWS EKS</span><span>Argo Rollouts</span><span>GitHub Actions</span><span>Flask</span>
           </div>
-          <div class="term">
-<span class="c"># OIDC federated subject — no secrets, ever</span><br>
-"subject": "repo:mykaelHunter/cloudopshub:<span class="p">environment:production</span>"<br><br>
-<span class="c"># bug: envsubst never fired</span><br>
-<span class="err">✗ /etc/nginx/conf.d/default.conf</span>  <span class="c"># wrong dir</span><br>
-<span class="err">✗ default.conf.templates</span>          <span class="c"># plural, wrong</span><br>
-<span class="p">✔ /etc/nginx/templates/default.conf.template</span><br><br>
-<span class="c"># alertmanager gossip fix</span><br>
-$ kubectl scale statefulset alertmanager-... <span class="p">--replicas=3</span> -n monitoring<br>
-<span class="p">✔ cluster status: healthy</span>
-          </div>
+          <a class="repo-link" href="https://github.com/mykaelHunter/payday-devops" target="_blank" rel="noopener">github.com/mykaelHunter/payday-devops →</a>
         </div>
-        <a class="repo-link" href="https://github.com/mykaelHunter/cloudopshub" target="_blank" rel="noopener">github.com/mykaelHunter/cloudopshub</a>
       </div>
 
-      <!-- SLIDE 3: PAYDAY EKS -->
-      <div class="slide">
-        <div class="eyebrow"><span class="dot"></span> project 03 // fintech on eks</div>
-        <h2 class="title">Payday Fintech — AWS EKS</h2>
-        <div class="role">EKS · Argo Rollouts Canary · ArgoCD · GitHub Actions OIDC · Helm</div>
-        <div class="meta-row">
-          <span class="pill hit">Canary-first release strategy</span>
-          <span class="pill hit">Spot node groups for cost control</span>
-          <span class="pill">GHCR + Cosign signing</span>
+      <div class="project">
+        <div class="index">04</div>
+        <div>
+          <h3>TaskApp — kOps Capstone</h3>
+          <p>A Flask + React application deployed on a kOps-managed AWS cluster, spread across multiple availability zones for high availability. Includes Kubernetes-native PostgreSQL manifests built to replace a managed RDS instance.</p>
         </div>
-        <div class="grid2">
-          <div>
-            <p class="section-label">// what shipped</p>
-            <ul class="bullets">
-              <li>Deployed Payday's payments API to a dedicated <code>payday-eks</code> cluster in us-east-2, backed by Terraform-managed VPC and node groups.</li>
-              <li>Wired the full code-to-cluster path: push → GitHub Actions build/test/SAST/Trivy/Cosign → GHCR → ArgoCD sync → Argo Rollouts canary → Prometheus-gated promotion.</li>
-              <li>Chased down a silent CI killer: a <code>TestConfig</code> SQLite URI typo that was quietly breaking every test — migrations now run against real Postgres in CI, not SQLite, full stop.</li>
-              <li>Resolved a conflicting <code>backend/__init__.py</code> and cleaned <code>sslmode</code> handling and flake8 violations across the whole backend.</li>
-              <li>Configured GitHub OIDC so the pipeline authenticates to AWS with zero long-lived keys.</li>
-            </ul>
+        <div class="meta">
+          <div class="stack-tags">
+            <span>kOps</span><span>AWS</span><span>PostgreSQL</span><span>React</span>
           </div>
-          <div class="term">
-<span class="c"># the bug that broke every test run</span><br>
-<span class="err">TestConfig.SQLALCHEMY_DATABASE_URI = "sqlite://..." </span><span class="c"># wrong</span><br>
-<span class="p">TestConfig.SQLALCHEMY_DATABASE_URI = "postgresql://..."</span><span class="c"> # fixed</span><br><br>
-<span class="c"># release flow</span><br>
-push → build/test/scan/sign → GHCR<br>
-→ ArgoCD sync → Helm release<br>
-→ <span class="p">Argo Rollouts canary</span> → Prometheus gate<br>
-→ 100% or auto-rollback
-          </div>
+          <a class="repo-link" href="https://github.com/mykaelHunter/capstone-project-tsacademy" target="_blank" rel="noopener">github.com/mykaelHunter/capstone-project-tsacademy →</a>
         </div>
-        <a class="repo-link" href="https://github.com/mykaelHunter/payday-devops" target="_blank" rel="noopener">github.com/mykaelHunter/payday-devops</a>
-      </div>
-
-      <!-- SLIDE 4: TASKAPP KOPS -->
-      <div class="slide">
-        <div class="eyebrow"><span class="dot"></span> project 04 // ha kubernetes on aws</div>
-        <h2 class="title">TaskApp — kOps Capstone</h2>
-        <div class="role">kOps · Terraform · Multi-AZ · cert-manager · AWS Secrets CSI Driver</div>
-        <div class="meta-row">
-          <span class="pill hit">3-AZ HA topology</span>
-          <span class="pill hit">Spot workers</span>
-          <span class="pill">Auto etcd backups every 15min</span>
-        </div>
-        <div class="grid2">
-          <div>
-            <p class="section-label">// what shipped</p>
-            <ul class="bullets">
-              <li>Migrated a locally-run TaskApp (React + Flask + Postgres) to a highly available, kOps-managed Kubernetes cluster spanning 3 Availability Zones.</li>
-              <li>Terraform-provisioned everything from scratch: VPC, public/private subnets, S3 remote state with DynamoDB locking, and automated billing alerts.</li>
-              <li>Private Kubernetes topology with a multi-master control plane and Spot-instance worker nodes for cost efficiency without sacrificing HA.</li>
-              <li>Automated HTTPS end-to-end via cert-manager and NGINX ingress, with Route53 handling DNS delegation for frontend and backend hosts.</li>
-              <li>Replaced the local Postgres container with a private-subnet RDS instance, with secrets pulled through the AWS Secrets Store CSI driver — nothing sensitive lives in a manifest.</li>
-            </ul>
-          </div>
-          <div class="term">
-<span class="c"># infra footprint</span><br>
-terraform/root/      <span class="c">→ VPC, subnets, S3+DynamoDB backend</span><br>
-kops/                <span class="c">→ cluster provisioning + validation</span><br>
-kops/terraform_rds/  <span class="c">→ private Postgres RDS</span><br>
-kops/terraform_route53/ <span class="c">→ DNS records</span><br>
-k8s/                 <span class="c">→ manifests, secrets CSI, ingress</span><br><br>
-<span class="p">✔ etcd backups: every 15 min → S3</span><br>
-<span class="p">✔ 3 AZs, private topology, spot workers</span>
-          </div>
-        </div>
-        <a class="repo-link" href="https://github.com/mykaelHunter/capstone-project-tsacademy" target="_blank" rel="noopener">github.com/mykaelHunter/capstone-project-tsacademy</a>
       </div>
 
     </div>
   </div>
+</section>
 
-  <div class="nav">
-    <div class="arrows">
-      <button class="arrow-btn" id="prev">←</button>
-      <button class="arrow-btn" id="next">→</button>
+<section class="skills" id="stack">
+  <div class="skills-grid">
+    <div class="skill-col">
+      <h4>Orchestration</h4>
+      <ul>
+        <li>Kubernetes</li>
+        <li>Docker</li>
+        <li>Helm</li>
+        <li>ArgoCD (GitOps)</li>
+      </ul>
     </div>
-    <div class="dots" id="dots"></div>
-    <div class="counter" id="counter">01 / 05</div>
+    <div class="skill-col">
+      <h4>Infrastructure</h4>
+      <ul>
+        <li>Terraform</li>
+        <li>Ansible</li>
+        <li>AWS · GCP · Azure</li>
+        <li>kOps</li>
+      </ul>
+    </div>
+    <div class="skill-col">
+      <h4>Delivery</h4>
+      <ul>
+        <li>GitHub Actions</li>
+        <li>OIDC pipelines</li>
+        <li>Canary / Rollouts</li>
+        <li>Chaos engineering</li>
+      </ul>
+    </div>
+    <div class="skill-col">
+      <h4>Observability</h4>
+      <ul>
+        <li>Prometheus</li>
+        <li>Grafana</li>
+        <li>Loki</li>
+        <li>Python / Click</li>
+      </ul>
+    </div>
   </div>
-</div>
+</section>
+
+<section class="contact" id="contact">
+  <span class="eyebrow">Let's talk infrastructure</span>
+  <h2 style="margin-top:20px;">Reach out, I'm building.</h2>
+  <div class="contact-links">
+    <a href="https://linkedin.com/in/mykaelhunter" target="_blank" rel="noopener">
+      <span class="label">LinkedIn</span>
+      <span class="value">linkedin.com/in/mykaelhunter</span>
+    </a>
+    <a href="https://github.com/mykaelHunter" target="_blank" rel="noopener">
+      <span class="label">GitHub</span>
+      <span class="value">@mykaelHunter</span>
+    </a>
+    <a href="mailto:msilas007@gmail.com">
+      <span class="label">Email</span>
+      <span class="value">msilas007@gmail.com</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Egbuatu Silas Odinaka</span>
+  <span>Built with resilient infrastructure principles.</span>
+</footer>
 
 <script>
-  const track = document.getElementById('track');
-  const slides = track.children;
-  const total = slides.length;
-  let idx = 0;
-  const dotsWrap = document.getElementById('dots');
-  for(let i=0;i<total;i++){
-    const b = document.createElement('button');
-    b.className = 'dot-btn' + (i===0?' active':'');
-    b.addEventListener('click',()=>go(i));
-    dotsWrap.appendChild(b);
+(function(){
+  const canvas = document.getElementById('network-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, nodes;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    w = canvas.width = canvas.offsetWidth * devicePixelRatio;
+    h = canvas.height = canvas.offsetHeight * devicePixelRatio;
   }
-  function render(){
-    track.style.transform = `translateX(-${idx*100}%)`;
-    [...dotsWrap.children].forEach((d,i)=>d.classList.toggle('active', i===idx));
-    document.getElementById('counter').textContent = String(idx+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+
+  function init(){
+    resize();
+    const count = Math.max(18, Math.floor((canvas.offsetWidth * canvas.offsetHeight) / 42000));
+    nodes = Array.from({length: count}, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.15 * devicePixelRatio,
+      vy: (Math.random() - 0.5) * 0.15 * devicePixelRatio,
+      r: (Math.random() * 1.6 + 1.2) * devicePixelRatio
+    }));
   }
-  function go(i){ idx = (i+total)%total; render(); }
-  document.getElementById('prev').addEventListener('click',()=>go(idx-1));
-  document.getElementById('next').addEventListener('click',()=>go(idx+1));
-  document.addEventListener('keydown',(e)=>{
-    if(e.key==='ArrowRight') go(idx+1);
-    if(e.key==='ArrowLeft') go(idx-1);
-  });
-  render();
+
+  function step(){
+    ctx.clearRect(0, 0, w, h);
+    for(const n of nodes){
+      if(!reduceMotion){
+        n.x += n.vx; n.y += n.vy;
+        if(n.x < 0 || n.x > w) n.vx *= -1;
+        if(n.y < 0 || n.y > h) n.vy *= -1;
+      }
+    }
+    const maxDist = 170 * devicePixelRatio;
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a = nodes[i], b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < maxDist){
+          ctx.strokeStyle = `rgba(199,204,212,${(1 - dist/maxDist) * 0.35})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    for(const n of nodes){
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(199,204,212,0.85)';
+      ctx.fill();
+    }
+    if(!reduceMotion) requestAnimationFrame(step);
+  }
+
+  window.addEventListener('resize', () => { init(); if(reduceMotion) step(); });
+  init();
+  step();
+})();
 </script>
+
 </body>
 </html>
