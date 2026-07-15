@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mykael Hunter — DevOps Portfolio</title>
+<style>
+  :root{
+    --bg: #0b0f0d;
+    --panel: #111613;
+    --line: #23302a;
+    --amber: #ffb454;
+    --green: #6bffb0;
+    --red: #ff6b6b;
+    --ink: #e9ede9;
+    --dim: #8a9a90;
+    --mono: 'JetBrains Mono','SF Mono',Consolas,monospace;
+    --disp: 'Archivo Black','Arial Black',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    display:flex; flex-direction:column; align-items:center;
+    padding:28px 14px 40px; min-height:100vh;
+  }
+  .wrap{width:100%; max-width:980px;}
+  .topbar{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:16px; font-family:var(--mono); font-size:12px; color:var(--dim);
+    letter-spacing:.04em; text-transform:uppercase;
+  }
+  .topbar b{color:var(--green);}
+  .stage{
+    position:relative; border:1px solid var(--line); border-radius:4px;
+    background:
+      linear-gradient(180deg, rgba(107,255,176,.03), transparent 40%),
+      var(--panel);
+    overflow:hidden; min-height:560px;
+  }
+  .stage::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,.012) 0px, rgba(255,255,255,.012) 1px, transparent 1px, transparent 3px);
+  }
+  .track{display:flex; transition: transform .5s cubic-bezier(.65,0,.35,1);}
+  .slide{
+    min-width:100%; padding:44px 48px 40px; display:flex; flex-direction:column;
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--amber); display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--red); box-shadow:0 0 0 3px rgba(255,107,107,.15);}
+  h1.hero{
+    font-family:var(--disp); font-size:clamp(30px,5vw,46px); line-height:1.02; margin:0 0 10px;
+    letter-spacing:-0.01em;
+  }
+  h2.title{
+    font-family:var(--disp); font-size:clamp(26px,4vw,38px); line-height:1.04; margin:0 0 6px;
+    letter-spacing:-.01em;
+  }
+  .sub{color:var(--dim); font-size:15px; max-width:640px; margin:0 0 22px; line-height:1.5;}
+  .role{font-family:var(--mono); font-size:12.5px; color:var(--green); margin-bottom:26px;}
+  .meta-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px;}
+  .pill{
+    font-family:var(--mono); font-size:11px; border:1px solid var(--line); color:var(--ink);
+    padding:5px 10px; border-radius:3px; background:rgba(255,255,255,.02);
+  }
+  .pill.hit{border-color:var(--green); color:var(--green);}
+  .grid2{display:grid; grid-template-columns:1.1fr .9fr; gap:28px; flex:1;}
+  .stat-block{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px;}
+  .stat{border-left:2px solid var(--amber); padding:2px 0 2px 12px;}
+  .stat .num{font-family:var(--disp); font-size:26px; color:var(--ink); display:block; line-height:1;}
+  .stat .lbl{font-family:var(--mono); font-size:10.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.06em;}
+  .term{
+    background:#070a08; border:1px solid var(--line); border-radius:4px;
+    font-family:var(--mono); font-size:12.2px; color:var(--green); padding:16px 16px;
+    line-height:1.65; overflow:auto; max-height:340px;
+  }
+  .term .c{color:var(--dim);}
+  .term .p{color:var(--amber);}
+  .term .err{color:var(--red);}
+  ul.bullets{margin:0; padding-left:0; list-style:none;}
+  ul.bullets li{
+    position:relative; padding-left:18px; margin-bottom:10px; font-size:14px; line-height:1.5; color:var(--ink);
+  }
+  ul.bullets li::before{content:"▸"; position:absolute; left:0; color:var(--amber);}
+  .section-label{font-family:var(--mono); font-size:11px; color:var(--dim); text-transform:uppercase; letter-spacing:.1em; margin:0 0 10px;}
+  .foot-line{
+    margin-top:auto; padding-top:18px; border-top:1px dashed var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--mono); font-size:11px; color:var(--dim);
+  }
+  .cover .grid2{display:block;}
+  .cover .lead{font-size:16px; color:var(--dim); max-width:600px; line-height:1.6; margin-bottom:30px;}
+  .stack-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:auto;}
+  .stack-tags span{font-family:var(--mono); font-size:11px; color:var(--amber); border:1px solid rgba(255,180,84,.35); padding:4px 9px; border-radius:3px;}
+  .bio{font-family:var(--mono); font-size:13px; color:var(--ink); border-left:2px solid var(--green); padding:10px 0 10px 14px; margin-bottom:24px; max-width:600px; line-height:1.6;}
+  .repo-link{
+    display:inline-flex; align-items:center; gap:6px; margin-top:16px;
+    font-family:var(--mono); font-size:12px; color:var(--green); text-decoration:none;
+    border:1px solid rgba(107,255,176,.35); padding:7px 12px; border-radius:3px; width:fit-content;
+    transition:.2s;
+  }
+  .repo-link:hover{background:rgba(107,255,176,.08); border-color:var(--green);}
+  .repo-link::before{content:"↗";}
+  .nav{display:flex; align-items:center; justify-content:space-between; margin-top:18px;}
+  .arrows{display:flex; gap:10px;}
+  .arrow-btn{
+    width:42px; height:42px; border-radius:50%; border:1px solid var(--line); background:var(--panel);
+    color:var(--ink); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:.2s;
+  }
+  .arrow-btn:hover{border-color:var(--green); color:var(--green);}
+  .dots{display:flex; gap:8px;}
+  .dot-btn{width:8px; height:8px; border-radius:50%; background:var(--line); border:none; cursor:pointer; padding:0;}
+  .dot-btn.active{background:var(--green); width:22px; border-radius:4px; transition:.25s;}
+  .counter{font-family:var(--mono); font-size:12px; color:var(--dim);}
+  @media(max-width:720px){
+    .grid2{grid-template-columns:1fr;}
+    .slide{padding:30px 22px 26px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><span>~/portfolio</span><span><b>mykaelHunter</b> // devops.exe --run</span></div>
+
+  <div class="stage">
+    <div class="track" id="track">
+
+      <!-- SLIDE 0: COVER -->
+      <div class="slide cover">
+        <div class="eyebrow"><span class="dot"></span> boot sequence // 01 of 05</div>
+        <h1 class="hero">MYKAEL HUNTER<br>BUILDS PLATFORMS<br>THAT DON'T FALL OVER.</h1>
+        <p class="lead">DevOps / Platform Engineer. I take chaotic infrastructure — hardcoded keys, public databases, all-or-nothing deploys — and turn it into self-service, policy-governed, chaos-tested systems. Four production-grade builds. Real outages, real fixes, real numbers.</p>
+        <div class="bio">
+          Mykael Hunter — DevOps/Platform Engineer, Expadox Mentorship Lab (Cohort 2).<br>
+          Stack: Kubernetes, Docker, Terraform, Ansible, Helm, ArgoCD, GitHub Actions, AWS/GCP/Azure.<br>
+          Currently building OpsShield, a multi-tenant SaaS platform, while applying for DevOps roles.
+        </div>
+        <div class="stack-tags">
+          <span>Kubernetes</span><span>Terraform</span><span>ArgoCD</span><span>Argo Rollouts</span>
+          <span>GitHub Actions</span><span>AWS · Azure · GCP</span><span>Prometheus/Grafana/Loki</span>
+          <span>OPA/Conftest</span><span>Chaos Engineering</span><span>Ansible</span>
+        </div>
+        <div class="foot-line"><span>swipe / click through →</span><span>github.com/mykaelHunter</span></div>
+      </div>
+
+      <!-- SLIDE 1: STACKBRIDGE / GROUNDUP -->
+      <div class="slide">
+        <div class="eyebrow"><span class="dot"></span> project 01 // internal developer platform</div>
+        <h2 class="title">StackBridge — GroundUp IDP</h2>
+        <div class="role">Python CLI · Terraform · OPA · ArgoCD · Chaos Engineering — Expadox Lab Capstone</div>
+        <div class="meta-row">
+          <span class="pill hit">3–5 days → &lt;60s provisioning</span>
+          <span class="pill hit">Auto-rollback in ~30s</span>
+          <span class="pill">OPA policy gate on every plan</span>
+          <span class="pill">3 chaos experiments</span>
+        </div>
+        <div class="grid2">
+          <div>
+            <p class="section-label">// the problem</p>
+            <ul class="bullets">
+              <li>Audited a legacy stack riddled with hardcoded AWS keys, a public-subnet database, 0.0.0.0/0 security groups, and MD5-hashed passwords.</li>
+              <li>Six teams shipping daily with zero infra standard and a 3–5 day ticket queue just to get an environment.</li>
+              <li>Built a Python/Click CLI (<code>sb env create dev</code>) that hides Terraform, OPA, and Kubernetes entirely from the caller.</li>
+              <li>Wrote Rego policies that reject untagged resources and unapproved instance types before they ever touch the cloud.</li>
+              <li>Proved the canary rollback live: shipped a deliberately broken image, watched Argo Rollouts detect the error spike and revert traffic automatically — no human touched a button.</li>
+            </ul>
+          </div>
+          <div class="term">
+<span class="c"># deliberately broke a canary release on purpose</span><br>
+$ kubectl set image rollout/api-gateway api-gateway=stackbridge/api-gateway:<span class="err">canary-broken</span><br>
+$ kubectl argo rollouts get rollout api-gateway --watch<br>
+<span class="c">T+0s</span>  canary at 5% traffic<br>
+<span class="c">T+12s</span> error rate climbing past 5% threshold<br>
+<span class="c">T+90s</span> 3rd failed health check hit <span class="p">(failureLimit: 3)</span><br>
+<span class="p">T+92s  Argo Rollouts ABORTS. traffic → stable.</span><br>
+<span class="c">T+105s</span> error rate back to baseline<br><br>
+<span class="c"># self-service environment, one command</span><br>
+$ sb env create dev<br>
+<span class="p">✔ policy gate passed → provisioning...</span><br>
+<span class="p">✔ done in 47s</span>
+          </div>
+        </div>
+        <a class="repo-link" href="https://github.com/mykaelHunter/stackbridge" target="_blank" rel="noopener">github.com/mykaelHunter/stackbridge</a>
+      </div>
+
+      <!-- SLIDE 2: CLOUDOPSHUB -->
+      <div class="slide">
+        <div class="eyebrow"><span class="dot"></span> project 02 // multi-cluster gitops</div>
+        <h2 class="title">CloudOpsHub — Payday Platform</h2>
+        <div class="role">Azure AKS + KinD · ArgoCD · GitHub Actions OIDC · Prometheus/Grafana/Loki</div>
+        <div class="meta-row">
+          <span class="pill hit">Zero stored secrets — OIDC only</span>
+          <span class="pill hit">Trivy + Cosign on every image</span>
+          <span class="pill">Hybrid cloud/on-prem cluster split</span>
+          <span class="pill">Full Loki + Alertmanager stack</span>
+        </div>
+        <div class="grid2">
+          <div>
+            <p class="section-label">// what shipped</p>
+            <ul class="bullets">
+              <li>Ran a genuinely hybrid platform: a local KinD cluster on an Ubuntu VM alongside a real Azure AKS cluster, with one ArgoCD install managing both.</li>
+              <li>Killed static credentials entirely — GitHub Actions authenticates to Azure via OIDC federated identity, scoped per-environment (dev/staging/prod), zero secrets in the repo.</li>
+              <li>Ran a deliberate architecture experiment: reversed the cluster assignment (prod on local, dev/staging on cloud) to measure and prove real latency differences.</li>
+              <li>Fixed the nginx <code>default.conf.template</code> naming bug that silently broke <code>envsubst</code> backend routing — twice, until it was right.</li>
+              <li>Every image ships Trivy-scanned and Cosign-signed via Sigstore Rekor before it's allowed near a cluster.</li>
+            </ul>
+          </div>
+          <div class="term">
+<span class="c"># OIDC federated subject — no secrets, ever</span><br>
+"subject": "repo:mykaelHunter/cloudopshub:<span class="p">environment:production</span>"<br><br>
+<span class="c"># bug: envsubst never fired</span><br>
+<span class="err">✗ /etc/nginx/conf.d/default.conf</span>  <span class="c"># wrong dir</span><br>
+<span class="err">✗ default.conf.templates</span>          <span class="c"># plural, wrong</span><br>
+<span class="p">✔ /etc/nginx/templates/default.conf.template</span><br><br>
+<span class="c"># alertmanager gossip fix</span><br>
+$ kubectl scale statefulset alertmanager-... <span class="p">--replicas=3</span> -n monitoring<br>
+<span class="p">✔ cluster status: healthy</span>
+          </div>
+        </div>
+        <a class="repo-link" href="https://github.com/mykaelHunter/cloudopshub" target="_blank" rel="noopener">github.com/mykaelHunter/cloudopshub</a>
+      </div>
+
+      <!-- SLIDE 3: PAYDAY EKS -->
+      <div class="slide">
+        <div class="eyebrow"><span class="dot"></span> project 03 // fintech on eks</div>
+        <h2 class="title">Payday Fintech — AWS EKS</h2>
+        <div class="role">EKS · Argo Rollouts Canary · ArgoCD · GitHub Actions OIDC · Helm</div>
+        <div class="meta-row">
+          <span class="pill hit">Canary-first release strategy</span>
+          <span class="pill hit">Spot node groups for cost control</span>
+          <span class="pill">GHCR + Cosign signing</span>
+        </div>
+        <div class="grid2">
+          <div>
+            <p class="section-label">// what shipped</p>
+            <ul class="bullets">
+              <li>Deployed Payday's payments API to a dedicated <code>payday-eks</code> cluster in us-east-2, backed by Terraform-managed VPC and node groups.</li>
+              <li>Wired the full code-to-cluster path: push → GitHub Actions build/test/SAST/Trivy/Cosign → GHCR → ArgoCD sync → Argo Rollouts canary → Prometheus-gated promotion.</li>
+              <li>Chased down a silent CI killer: a <code>TestConfig</code> SQLite URI typo that was quietly breaking every test — migrations now run against real Postgres in CI, not SQLite, full stop.</li>
+              <li>Resolved a conflicting <code>backend/__init__.py</code> and cleaned <code>sslmode</code> handling and flake8 violations across the whole backend.</li>
+              <li>Configured GitHub OIDC so the pipeline authenticates to AWS with zero long-lived keys.</li>
+            </ul>
+          </div>
+          <div class="term">
+<span class="c"># the bug that broke every test run</span><br>
+<span class="err">TestConfig.SQLALCHEMY_DATABASE_URI = "sqlite://..." </span><span class="c"># wrong</span><br>
+<span class="p">TestConfig.SQLALCHEMY_DATABASE_URI = "postgresql://..."</span><span class="c"> # fixed</span><br><br>
+<span class="c"># release flow</span><br>
+push → build/test/scan/sign → GHCR<br>
+→ ArgoCD sync → Helm release<br>
+→ <span class="p">Argo Rollouts canary</span> → Prometheus gate<br>
+→ 100% or auto-rollback
+          </div>
+        </div>
+        <a class="repo-link" href="https://github.com/mykaelHunter/payday-devops" target="_blank" rel="noopener">github.com/mykaelHunter/payday-devops</a>
+      </div>
+
+      <!-- SLIDE 4: TASKAPP KOPS -->
+      <div class="slide">
+        <div class="eyebrow"><span class="dot"></span> project 04 // ha kubernetes on aws</div>
+        <h2 class="title">TaskApp — kOps Capstone</h2>
+        <div class="role">kOps · Terraform · Multi-AZ · cert-manager · AWS Secrets CSI Driver</div>
+        <div class="meta-row">
+          <span class="pill hit">3-AZ HA topology</span>
+          <span class="pill hit">Spot workers</span>
+          <span class="pill">Auto etcd backups every 15min</span>
+        </div>
+        <div class="grid2">
+          <div>
+            <p class="section-label">// what shipped</p>
+            <ul class="bullets">
+              <li>Migrated a locally-run TaskApp (React + Flask + Postgres) to a highly available, kOps-managed Kubernetes cluster spanning 3 Availability Zones.</li>
+              <li>Terraform-provisioned everything from scratch: VPC, public/private subnets, S3 remote state with DynamoDB locking, and automated billing alerts.</li>
+              <li>Private Kubernetes topology with a multi-master control plane and Spot-instance worker nodes for cost efficiency without sacrificing HA.</li>
+              <li>Automated HTTPS end-to-end via cert-manager and NGINX ingress, with Route53 handling DNS delegation for frontend and backend hosts.</li>
+              <li>Replaced the local Postgres container with a private-subnet RDS instance, with secrets pulled through the AWS Secrets Store CSI driver — nothing sensitive lives in a manifest.</li>
+            </ul>
+          </div>
+          <div class="term">
+<span class="c"># infra footprint</span><br>
+terraform/root/      <span class="c">→ VPC, subnets, S3+DynamoDB backend</span><br>
+kops/                <span class="c">→ cluster provisioning + validation</span><br>
+kops/terraform_rds/  <span class="c">→ private Postgres RDS</span><br>
+kops/terraform_route53/ <span class="c">→ DNS records</span><br>
+k8s/                 <span class="c">→ manifests, secrets CSI, ingress</span><br><br>
+<span class="p">✔ etcd backups: every 15 min → S3</span><br>
+<span class="p">✔ 3 AZs, private topology, spot workers</span>
+          </div>
+        </div>
+        <a class="repo-link" href="https://github.com/mykaelHunter/capstone-project-tsacademy" target="_blank" rel="noopener">github.com/mykaelHunter/capstone-project-tsacademy</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="arrows">
+      <button class="arrow-btn" id="prev">←</button>
+      <button class="arrow-btn" id="next">→</button>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="counter" id="counter">01 / 05</div>
+  </div>
+</div>
+
+<script>
+  const track = document.getElementById('track');
+  const slides = track.children;
+  const total = slides.length;
+  let idx = 0;
+  const dotsWrap = document.getElementById('dots');
+  for(let i=0;i<total;i++){
+    const b = document.createElement('button');
+    b.className = 'dot-btn' + (i===0?' active':'');
+    b.addEventListener('click',()=>go(i));
+    dotsWrap.appendChild(b);
+  }
+  function render(){
+    track.style.transform = `translateX(-${idx*100}%)`;
+    [...dotsWrap.children].forEach((d,i)=>d.classList.toggle('active', i===idx));
+    document.getElementById('counter').textContent = String(idx+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+  }
+  function go(i){ idx = (i+total)%total; render(); }
+  document.getElementById('prev').addEventListener('click',()=>go(idx-1));
+  document.getElementById('next').addEventListener('click',()=>go(idx+1));
+  document.addEventListener('keydown',(e)=>{
+    if(e.key==='ArrowRight') go(idx+1);
+    if(e.key==='ArrowLeft') go(idx-1);
+  });
+  render();
+</script>
+</body>
+</html>
